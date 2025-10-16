@@ -11,6 +11,7 @@ import type {
   GalleryContextType,
   GalleryState,
 } from "../types";
+import { NoteSchema } from "../schemas/noteSchema";
 
 const initialState: GalleryState = {
   artworks: [],
@@ -21,13 +22,24 @@ const GalleryContext = createContext<GalleryContextType | undefined>(undefined);
 function reducer(state: GalleryState, action: GalleryAction) {
   switch (action.type) {
     case "add_artwork": {
-      return { ...state, artworks: [...state.artworks, action.payLoad] };
+      return { ...state, artworks: [action.payLoad, ...state.artworks] };
     }
 
     case "remove_artwork": {
       return {
         ...state,
         artworks: state.artworks.filter((art) => art.id !== action.payLoad),
+      };
+    }
+
+    case "add_update_note": {
+      return {
+        ...state,
+        artworks: state.artworks.map((a) =>
+          a.id === action.payLoad.artworkId
+            ? { ...a, note: action.payLoad.note }
+            : a
+        ),
       };
     }
 
@@ -58,9 +70,21 @@ export default function GalleryContextProvider({
     dispatch({ type: "remove_artwork", payLoad: id });
   }
 
+  function addOrUpdateNote(artworkId: number, note: string) {
+    const parsed = NoteSchema.safeParse({ text: note });
+    if (!parsed.success) {
+      alert(parsed.error.message);
+      return;
+    }
+    dispatch({
+      type: "add_update_note",
+      payLoad: { artworkId, note: parsed.data.text },
+    });
+  }
+
   return (
     <GalleryContext.Provider
-      value={{ galleryState, addArtwork, removeArtwork }}
+      value={{ galleryState, addArtwork, removeArtwork, addOrUpdateNote }}
     >
       {children}
     </GalleryContext.Provider>
