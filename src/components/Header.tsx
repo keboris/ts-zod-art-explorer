@@ -100,7 +100,7 @@ const Header: React.FC<HeaderProps> = ({ handleSearch, resetSearch }) => {
             <Link
               to="/"
               onClick={resetSearch}
-              className="btn border-0 text-white bg-gradient-to-r from-[#000000] to-[#8f4de0] hover:opacity-90 transition-all duration-300 shadow-md"
+              className="btn border-0 text-dark bg-gradient-to-r from-[#00FF00] to-[#ffb703] hover:opacity-90 transition-all duration-300 shadow-md"
             >
               <svg
                 className="h-5 w-5 mr-2"
