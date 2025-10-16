@@ -17,7 +17,7 @@ const MyGallery: React.FC = () => {
           </h1>
 
           {galleryState.artworks.length === 0 ? (
-            <p className="text-center text-gray-600 text-lg">
+            <p className="text-center text-white-600 text-lg">
               You haven’t added any artworks yet.
             </p>
           ) : (
